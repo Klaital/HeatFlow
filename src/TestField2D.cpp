@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Field2D.hpp"
 
-typedef Field<int> IntField;
+typedef HeatFlow::Field<int> IntField;
 using namespace std;
+
 
 int main( )
 {
@@ -14,3 +15,5 @@ int main( )
     cout << "Printing out the " << rows << "x" << columns << " Field..." << endl;
     iField->print(); 
 }
+
+

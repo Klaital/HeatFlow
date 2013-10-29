@@ -3,7 +3,7 @@
 //
 // CONSTRUCTORS & DESTRUCTOR
 //
-
+namespace HeatFlow {
 // Default constructor. Creates a field with NULL data field
 template <typename T> Field<T>::Field()
 {
@@ -240,4 +240,6 @@ template <typename T> int Field<T>::fscan_binary(string filename)
     // Success!
     return 1;
 }
+
+} // namespace HeatFlow
 

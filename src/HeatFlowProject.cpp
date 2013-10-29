@@ -1,5 +1,7 @@
 #include "HeatFlowProject.hpp"
 
+namespace HeatFlow {
+
 HeatFlowProject::HeatFlowProject()
 {
     this->output_path = ".";
@@ -17,3 +19,6 @@ HeatFlowProject::~HeatFlowProject()
     delete this->title;
     delete this->notes;
 }
+
+} // namespace HeatFlow
+

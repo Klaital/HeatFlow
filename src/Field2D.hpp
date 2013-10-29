@@ -1,8 +1,12 @@
+#ifndef HEATFLOW_FIELD2D_H_
+#define HEATFLOW_FIELD2D_H_
+
 #include <iostream>
 #include <string>
 #include <stdio.h>
 
 using namespace std;
+namespace HeatFlow {
 
 template <typename T> class Field
 {
@@ -61,4 +65,7 @@ public:     // I/O Methods
     int fscan_binary(string filename);
     
 };
+}
+
+#endif // HEATFLOW_FIELD2D_H_
 

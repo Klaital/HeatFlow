@@ -1,4 +1,9 @@
+#ifndef HEATFLOW_HEATFLOWPROJECT_H_
+#define HEATFLOW_HEATFLOWPROJECT_H_
+
 #include "Field2D.hpp"
+
+namespace HeatFlow {
 
 class HeatFlowProject
 {
@@ -34,4 +39,8 @@ public:     // Constructors & Destructors
     // Destroy the project
     ~HeatFlowProject();
 };
+
+} // namespace HeatFlow
+
+#endif // HEATFLOW_HEATFLOWPROJECT_H_
 
