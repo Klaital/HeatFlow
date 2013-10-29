@@ -2,6 +2,9 @@
 #define HEATFLOW_MATERIALSCOLLECTION_H_
 
 #include <string>
+#include <vector>
+
+#include "Material.h"
 
 namespace HeatFlow {
 
@@ -16,9 +19,9 @@ public:
     int load(const std::string& path);
 
 private:
-    vector<Material> *mats;
+    std::vector<Material> *mats;
 };
 
-}
+} // namespace HeatFlow
 
-#endif //HEATFLOW_MATERIALSCOLLECTION_H_
+#endif // HEATFLOW_MATERIALSCOLLECTION_H_

@@ -10,11 +10,18 @@ public:
     Material();
     ~Material();
 
+    // Accessors 
+    inline void set_name(const std::string& new_name) { this->name = new_name; }
+    inline std::string get_name() { return this->name; }
+    
     // I/O helpers
     std::string to_string();
 //  std::string to_xml();
     int load_string(const std::string& s);
 //  int load_xml(const std::string& s);
+
+private:
+    std::string name;
 };
 } // namespace HeatFlow
 
