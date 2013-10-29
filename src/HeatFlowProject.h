@@ -1,16 +1,29 @@
 #ifndef HEATFLOW_HEATFLOWPROJECT_H_
 #define HEATFLOW_HEATFLOWPROJECT_H_
+#include <string>
 
-#include "Field2D.hpp"
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+
+#include "configs.h"
+#include "MaterialsCollection.h"
 
 namespace HeatFlow {
 
 class HeatFlowProject
 {
 private:    // Member variables
-    string  output_path;
-    string  title;
-    string  notes;
+    std::string  output_path;
+    std::string  title;
+    std::string  notes;
+    std::string  initial_temps_matrix_path;
+    std::string  bom_path;
+    std::string  materials_matrix_path;
+
+    boost::numeric::ublas::matrix<temperature_t, temperature_t> *initial_temps;
+    boost::numeric::ublas::matrix<int, int> *materials;
+    MaterialsCollection *bom;
+
     // TODO: decide what units these will be defined in. Maybe we can use a string for that, plus a unit-conversion library? 
     // For now, we'll assume 'meter', I guess.
     double  x_distance; // the distance between nodes in the X direction
@@ -18,12 +31,12 @@ private:    // Member variables
     int    time_step;  // number of milliseconds between calculation iterations
     
 public:     // Accessors
-    inline string get_output_path() { return this->output_path; }
-    inline void set_output_path(string new_path) { delete this->output_path; this->output_path = new string(new_path); }
-    inline string get_title()      { return this->title; }
-    inline void set_title(string new_title) { delete this->title; this->title = new string(new_title); }
-    inline string get_notes()      { return this->notes; }
-    inline void set_notes(string new_notes) { delete this->notes; this->notes = new string(new_notes); }
+    inline std::string get_output_path() { return this->output_path; }
+    inline void set_output_path(std::string new_path) { this->output_path = new_path; }
+    inline std::string get_title()      { return this->title; }
+    inline void set_title(std::string new_title) { this->title = new_title; }
+    inline std::string get_notes()      { return this->notes; }
+    inline void set_notes(std::string new_notes) { this->notes = new_notes; }
     
     inline double get_x_distance() { return this->x_distance; }
     inline double get_y_distance() { return this->y_distance; }

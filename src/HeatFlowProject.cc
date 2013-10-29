@@ -1,4 +1,4 @@
-#include "HeatFlowProject.hpp"
+#include "HeatFlowProject.h"
 
 namespace HeatFlow {
 
@@ -11,13 +11,14 @@ HeatFlowProject::HeatFlowProject()
     this->x_distance = 1.0;
     this->y_distance = 1.0;
     this->time_step  = 1000;
+
+    this->initial_temps = NULL;
+    this->materials = NULL;
+    this->bom = NULL;
 }
 
 HeatFlowProject::~HeatFlowProject()
 {
-    delete this->output_path;
-    delete this->title;
-    delete this->notes;
 }
 
 } // namespace HeatFlow
