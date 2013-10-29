@@ -11,9 +11,11 @@ private:    // Member variables
     string  output_path;
     string  title;
     string  notes;
+    // TODO: decide what units these will be defined in. Maybe we can use a string for that, plus a unit-conversion library? 
+    // For now, we'll assume 'meter', I guess.
     double  x_distance; // the distance between nodes in the X direction
     double  y_distance; // the distance between nodes in the Y direction
-    long    time_step;  // number of milliseconds between calculation iterations
+    int    time_step;  // number of milliseconds between calculation iterations
     
 public:     // Accessors
     inline string get_output_path() { return this->output_path; }
@@ -28,8 +30,8 @@ public:     // Accessors
     inline void set_x_distance(double distance) { this->x_distance = distance; }
     inline void set_y_distance(double distance) { this->y_distance = distance; }
     
-    inline long get_time_step() { return this->time_step; }
-    inline void set_time_step(long time_step) { this->time_step = time_step; }
+    inline int get_time_step() { return this->time_step; }
+    inline void set_time_step(int time_step) { this->time_step = time_step; }
 
 public:     // Constructors & Destructors
     
