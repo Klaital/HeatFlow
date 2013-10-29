@@ -10,5 +10,5 @@ Material.o: Material.h Material.cc
 	g++ Material.cc -c
 
 clean: 
-	rm ../bin/*.exe ../bin/TestField2D *.o *.stackdump ../test/*.o ../test/*.exe
+	rm ../bin/*.exe *.o *.stackdump ../test/*.o ../test/*.exe
 
