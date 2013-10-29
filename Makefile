@@ -1,17 +1,17 @@
 
-Field2D.o: Field2D.hpp Field2D.cpp
-	g++ Field2D.cpp -c
+Field2D.o: src/Field2D.hpp src/Field2D.cpp
+	g++ src/Field2D.cpp -c
 
-HeatFlowProject.o: HeatFlowProject.hpp HeatFlowProject.cpp
-	g++ HeatFlowProject.cpp -c
+HeatFlowProject.o: src/HeatFlowProject.hpp src/HeatFlowProject.cpp
+	g++ src/HeatFlowProject.cpp -c
 
-Test: TestField2D
+Test: bin/TestField2D
 	./TestField2D.exe
 
 TestField2D: TestField2D.cpp Field2D.o
 	g++ TestField2D.cpp -c 
-	g++ TestField2D.o Field2D.o -o TestField2D.exe
+	g++ TestField2D.o Field2D.o -o bin/TestField2D
 
 clean: 
-	rm TestField2D.exe *.o *.stackdump 
+	rm bin/*.exe bin/TestField2D *.o *.stackdump 
 
