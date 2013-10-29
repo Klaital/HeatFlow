@@ -1,6 +1,7 @@
 #ifndef HEATFLOW_MATERIALSCOLLECTION_H_
 #define HEATFLOW_MATERIALSCOLLECTION_H_
 
+#include <stdio.h>
 #include <string>
 #include <vector>
 
