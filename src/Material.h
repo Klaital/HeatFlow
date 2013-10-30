@@ -15,10 +15,8 @@ public:
     inline std::string get_name() { return this->name; }
     
     // I/O helpers
-    std::string to_string();
-//  std::string to_xml();
-    int load_string(const std::string& s);
-//  int load_xml(const std::string& s);
+    int to_xml(int index, std::string& xml_buffer);
+    int load_xml(const std::string& s);
 
 private:
     std::string name;

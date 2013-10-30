@@ -15,18 +15,29 @@ Material::~Material()
 }
 
 // I/O helpers
-std::string Material::to_string()
+int Material::to_xml(int index, std::string& xml_buffer)
 {
-    // CSV Columns:
-    // NAME
+    // <material index="%i"><name>%s</name></material> -> 46 characters for the markup
+    std::string indexStr = std::to_string(index);
 
-    return this->name;
+    size_t buffer_length = indexStr.length() + 47 + this->name.length()
+    char *buff = malloc(buffer_length);
+    res = snprintf(buff, buffer_length, "<material index=\"%i\"><name>%s</name></material>", index, this->name.c_str());
+    if (res <= 0) {
+        return res;
+    }
+
+    xml_buffer.assign(buff);
+    free(buff);
+    return 1;
 }
-int Material::load_string(const std::string& s)
+int Material::load_xml(const std::string& xml)
 {
+    // TODO: use TinyXML2 to parse the XML;
     // See to_string for description of columns
     // for now, the only column is the name
-    this->name = s;
+    this->name = "Name from XML";
+    return 0;
 }
 
 } // namespace HeatFlow
