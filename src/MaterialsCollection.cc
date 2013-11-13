@@ -36,6 +36,20 @@ int MaterialsCollection::save(const std::string& path)
 int MaterialsCollection::load(const std::string& path) 
 {
     // TODO: implement collection file read method
+    XMLDocument doc;
+    doc.LoadFile(path.c_str());
+    const char* new_name = doc.FirstChildElement("MaterialsCollection")->FirstChildElement("name")->GetText();
+    if (new_name == NULL) {
+        return 0;
+    }
+    this->name.assign(new_name);
+    XMLNode *collection = doc.FirstChildElement("MaterialsCollection");
+    delete this->bom;
+    this->bom = new vector<Material>;
+    if (!collection->NoChildren()) {
+
+    }
+
     return 0; // error
 }
 
