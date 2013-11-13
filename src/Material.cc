@@ -33,9 +33,10 @@ int Material::to_xml(int index, std::string& xml_buffer)
 }
 int Material::load_xml(const std::string& xml)
 {
-    // TODO: use TinyXML2 to parse the XML;
+    // TODO: use TinyXML2 to parse the XML
     // See to_string for description of columns
     // for now, the only column is the name
+
     this->name = "Name from XML";
     return 0;
 }
