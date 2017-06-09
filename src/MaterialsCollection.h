@@ -37,19 +37,20 @@ public:
     int find_first(const std::string& name);
     // Return a list of indices for all Materials matching the given name.
     // An empty list indicates that the name was not found.
-    vector<int> find_all(const std::string& name);
+    std::vector<int> find_all(const std::string& name);
     // Fetch by value the material at a given index in the BOM.
     Material get(int index);
     // Alter the material at a given index to match the Material data given in 'm'.
     int save(int index, const Material& m);
     // Append a new Material to the BOM.
-    int add(const Mateial& m);
+    int add(const Material& m);
     // Remove the Material at the given index from the BOM.
-    int delete(int index);
+    int remove(int index);
 
 private:
 	// The Bill Of Materials for a project.
     std::vector<Material> *mats;
+	std::string *name;
 };
 
 } // namespace HeatFlow

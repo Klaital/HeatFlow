@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio stuff
+*.suo
+*.db
+.vs/*
+
