@@ -19,13 +19,13 @@ int MaterialsCollection::save(const std::string& path)
         return 0;
     }
 
-    fprintf(f, "<MaterialsCollection><name>%s</name><Materials>", this->name.c_str());
+    fprintf(f, "<MaterialsCollection><name>%s</name><Materials>", this->name->c_str());
     int i = 0;
     std::string xml_buffer;
     for (std::vector<Material>::iterator it = this->mats->begin(); it != this->mats->end(); ++it) 
     {
         // TODO: check for success, log/handle error 
-        it->to_xml(i, xml_buffer)
+		it->to_xml(i, xml_buffer);
         fprintf(f, "%s", xml_buffer.c_str());
         ++i;
     }
@@ -36,16 +36,16 @@ int MaterialsCollection::save(const std::string& path)
 int MaterialsCollection::load(const std::string& path) 
 {
     // TODO: implement collection file read method
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     doc.LoadFile(path.c_str());
     const char* new_name = doc.FirstChildElement("MaterialsCollection")->FirstChildElement("name")->GetText();
     if (new_name == NULL) {
         return 0;
     }
-    this->name.assign(new_name);
-    XMLNode *collection = doc.FirstChildElement("MaterialsCollection");
-    delete this->bom;
-    this->bom = new vector<Material>;
+    this->name->assign(new_name);
+	tinyxml2::XMLNode *collection = doc.FirstChildElement("MaterialsCollection");
+    delete this->mats;
+    this->mats = new std::vector<Material>();
     if (!collection->NoChildren()) {
 
     }

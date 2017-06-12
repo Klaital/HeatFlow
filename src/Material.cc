@@ -19,16 +19,12 @@ int Material::to_xml(int index, std::string& xml_buffer)
 {
     // <material index="%i"><name>%s</name></material> -> 46 characters for the markup
     std::string indexStr = std::to_string(index);
+	std::stringstream ss;
 
-    size_t buffer_length = indexStr.length() + 47 + this->name.length()
-    char *buff = malloc(buffer_length);
-    res = snprintf(buff, buffer_length, "<material index=\"%i\"><name>%s</name></material>", index, this->name.c_str());
-    if (res <= 0) {
-        return res;
-    }
+	ss << "<material index=\"" << index << "\"><name>" << this->name << "</name></material>";
 
-    xml_buffer.assign(buff);
-    free(buff);
+    
+	xml_buffer.assign(ss.str());
     return 1;
 }
 int Material::load_xml(const std::string& xml)
