@@ -8,6 +8,8 @@ namespace HeatFlow {
 Material::Material() 
 {
     this->name = "";
+	this->conductivity = 0.591; // water
+	this->density = 1.0; // water at 4-5 degrees C
 }
 Material::~Material()
 {

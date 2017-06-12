@@ -7,7 +7,7 @@ HeatFlowProject::HeatFlowProject()
 	title = "New Sim Project";
 	notes = "";
 	initial_temps_matrix_path = "Temps.matrix";
-	bom_path = "BOM.json";
+	bom_path = "BOM.xml";
 	materials_matrix_path = "Materials.matrix";
 
 	this->initial_temps = new boost::numeric::ublas::matrix<temperature_t>();
