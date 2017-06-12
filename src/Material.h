@@ -3,6 +3,7 @@
 
 #include <string>
 #include <sstream>
+#include "configs.h"
 
 namespace HeatFlow {
 class Material 
@@ -21,6 +22,7 @@ public:
 
 private:
     std::string name;
+	density_t density; // grams / cm^3
 };
 } // namespace HeatFlow
 

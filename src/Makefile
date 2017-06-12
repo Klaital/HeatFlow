@@ -12,7 +12,7 @@ tinyxml.o: tinyxml2.h tinyxml2.cpp
 MaterialsCollection.o: MaterialsCollection.h MaterialsCollection.cc tinyxml2.o
 	$(CC) MaterialsCollection.cc -c $(CFLAGS)
 
-Material.o: Material.h Material.cc
+Material.o: Material.h Material.cc configs.h
 	$(CC) Material.cc -c $(CFLAGS)
 
 clean: 
