@@ -23,8 +23,8 @@ private:    // Member variables
     std::string  bom_path;
     std::string  materials_matrix_path;
 
-    boost::numeric::ublas::matrix<temperature_t, temperature_t> *initial_temps;
-    boost::numeric::ublas::matrix<int, int> *materials;
+    boost::numeric::ublas::matrix<temperature_t> *initial_temps;
+    boost::numeric::ublas::matrix<int> *materials;
     MaterialsCollection *bom;
 
     // TODO: decide what units these will be defined in. Maybe we can use a string for that, plus a unit-conversion library? 

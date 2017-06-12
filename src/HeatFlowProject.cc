@@ -4,21 +4,26 @@ namespace HeatFlow {
 
 HeatFlowProject::HeatFlowProject()
 {
-    this->output_path = ".";
-    this->title = "New HeatFlow Project";
-    this->notes = "Project notes here";
-    
-    this->x_distance = 1.0;
-    this->y_distance = 1.0;
-    this->time_step  = 1000;
+	title = "New Sim Project";
+	notes = "";
+	initial_temps_matrix_path = "Temps.matrix";
+	bom_path = "BOM.json";
+	materials_matrix_path = "Materials.matrix";
 
-    this->initial_temps = NULL;
-    this->materials = NULL;
-    this->bom = NULL;
+	this->initial_temps = new boost::numeric::ublas::matrix<temperature_t>();
+	this->materials = new boost::numeric::ublas::matrix<int>();
+	this->bom = new MaterialsCollection();
+
+	// TODO: decide what units these will be defined in. Maybe we can use a string for that, plus a unit-conversion library? 
+	// For now, we'll assume 'meter', I guess.
+	x_distance = 0.0001; // the distance between nodes in the X direction
+	y_distance = 0.0001; // the distance between nodes in the Y direction
+	time_step = 1;  // number of milliseconds between calculation iterations
 }
 
 HeatFlowProject::~HeatFlowProject()
 {
+	delete this->bom;
 }
 
 } // namespace HeatFlow

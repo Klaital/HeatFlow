@@ -2,6 +2,7 @@
 #define HEATFLOW_MATERIAL_H_
 
 #include <string>
+#include <sstream>
 
 namespace HeatFlow {
 class Material 
