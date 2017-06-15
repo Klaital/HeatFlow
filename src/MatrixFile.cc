@@ -2,8 +2,5 @@
 
 namespace HeatFlow {
 
-HeatFlowProject::HeatFlowProject() {
-	
-}
 
 } // namespace HeatFlow
