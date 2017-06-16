@@ -1,5 +1,5 @@
 CC=g++
-#CPPFLAGS=-std=c++11
+CPPFLAGS=-std=c++11
 GTEST_DIR = ../../googletest/googletest
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
@@ -8,7 +8,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = matrix_file_test
+TESTS = matrix_file_test utilities_test test_all
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -17,7 +17,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 
 # House-keeping build targets.
 
-all: HeatFlowProject.o MaterialsCollection.o Material.o MatrixFile.o $(TESTS)
+all: utilities.o HeatFlowProject.o MaterialsCollection.o Material.o $(TESTS)
 clean: 
 	rm -f ../bin/*.exe *.o *.a *.stackdump ../test/*.o ../test/*.exe $(TESTS) a.out
 
@@ -47,26 +47,39 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 
 # Actual Project libraries
+utilities.o: utilities.h utilities.cc
+	$(CC) utilities.cc -c $(CPPFLAGS) $(CXXFLAGS)
+
 HeatFlowProject.o: MaterialsCollection.h HeatFlowProject.h HeatFlowProject.cc
-	$(CC) HeatFlowProject.cc -c $(CPPFLAGS)
+	$(CC) HeatFlowProject.cc -c $(CPPFLAGS) $(CXXFLAGS)
 
 tinyxml.o: tinyxml2.h tinyxml2.cpp
-	$(CC) tinyxml2.cpp -c $(CPPFLAGS)
+	$(CC) tinyxml2.cpp -c $(CPPFLAGS) $(CXXFLAGS)
 
 MaterialsCollection.o: MaterialsCollection.h MaterialsCollection.cc tinyxml2.o
-	$(CC) MaterialsCollection.cc -c $(CPPFLAGS)
+	$(CC) MaterialsCollection.cc -c $(CPPFLAGS) $(CXXFLAGS)
 
 Material.o: Material.h Material.cc configs.h
-	$(CC) Material.cc -c $(CPPFLAGS)
-
-MatrixFile.o: MatrixFile.h MatrixFile.cc
-	$(CC) MatrixFile.cc -c $(CPPFLAGS)
-
+	$(CC) Material.cc -c $(CPPFLAGS) $(CXXFLAGS)
 
 # Test suites
+utilities_test.o: utilities.o utilities_test.cc $(GTEST_HEADERS)
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c utilities_test.cc
+
+utilities_test: utilities_test.o utilities.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+
 matrix_file_test.o: MatrixFile.h matrix_file_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c matrix_file_test.cc
 
-matrix_file_test: matrix_file_test.o MatrixFile.o gtest_main.a
-	$(CC) $(CPPFLAGS) $^ -lpthread -o $@
+matrix_file_test: matrix_file_test.o utilities.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
 
+test_all.o: test_all.cc $(GTEST_HEADERS)
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c test_all.cc
+
+test_all: matrix_file_test.o utilities.o test_all.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+
+test: test_all
+	./test_all
