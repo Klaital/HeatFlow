@@ -41,6 +41,7 @@ namespace HeatFlow {
 			this->data_->resize(i, j, false);
 			for (size_t i=0; i < this->data_->size1(); i++) {
 				for (size_t j = 0; j < this->data_->size2(); j++) {
+					(*this->data_)(i, j) = default_value;
 				}
 			}
 		}
