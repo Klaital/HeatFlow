@@ -26,10 +26,10 @@ TEST(DataSetTest, SingleValue) {
 	EXPECT_EQ(15, test_file->get_datum(0, 0));
 }
 
-TEST(FileIOTest, ReadAsciiSuccess) {
+TEST(FileIOTest, ReadIntAsciiSuccess) {
 	HeatFlow::MatrixFile<int> *test_file = new HeatFlow::MatrixFile<int>();
 	std::string path("../test/data/sample1_ascii.intfield");
-	int file_read_success = test_file->read_file_ascii("../test/data/sample1_ascii.intfield");
+	int file_read_success = test_file->read_file_ascii(path);
 
 	// Check whether the data matrix resized correctly
 	EXPECT_EQ(10, test_file->get_data()->size1());
@@ -38,11 +38,29 @@ TEST(FileIOTest, ReadAsciiSuccess) {
 	// Check if the file read method reported success
 	EXPECT_EQ(1, file_read_success);
 	// Test whether the resulting data matrix has the correct dimensions and values
-	EXPECT_EQ(10, test_file->get_data()->size1());
-	EXPECT_EQ(15, test_file->get_data()->size2());
+	EXPECT_EQ(0, test_file->get_datum(0, 1));
 	EXPECT_EQ(1234, test_file->get_datum(0, 0));
 	EXPECT_EQ(3456, test_file->get_datum(7, 3));
 }
+
+
+TEST(FileIOTest, ReadDoubleAsciiSuccess) {
+	HeatFlow::MatrixFile<double> *test_file = new HeatFlow::MatrixFile<double>();
+	std::string path("../test/data/sample1_ascii.floatfield");
+	int file_read_success = test_file->read_file_ascii(path);
+
+	// Check whether the data matrix resized correctly
+	EXPECT_EQ(10, test_file->get_data()->size1());
+	EXPECT_EQ(15, test_file->get_data()->size2());
+
+	// Check if the file read method reported success
+	EXPECT_EQ(1, file_read_success);
+	// Test whether the resulting data matrix has the correct dimensions and values
+	EXPECT_EQ(0.0, test_file->get_datum(0, 1));
+	EXPECT_EQ(123.4, test_file->get_datum(0, 0));
+	EXPECT_EQ(345.6, test_file->get_datum(7, 3));
+}
+
 
 TEST(FileIOTest, ReadAsciiFileNotFound) {
 	HeatFlow::MatrixFile<int> *test_file = new HeatFlow::MatrixFile<int>();
