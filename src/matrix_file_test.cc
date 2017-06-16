@@ -80,6 +80,7 @@ TEST(FileIOTest, ReadAsciiFileInvalidHeader) {
 
 TEST(FileWriteTest, WriteAsciiSuccess) {
 	HeatFlow::MatrixFile<int> *test_file = new HeatFlow::MatrixFile<int>();
+	std::string path("../test/data/sample2_ascii_output.intfield");
 
 	// Initialize the matrix and validate the new structure
 	test_file->initialize(10, 15, 3);
@@ -93,4 +94,15 @@ TEST(FileWriteTest, WriteAsciiSuccess) {
 	EXPECT_EQ(15, test_file->get_data()->size2());
 	EXPECT_EQ(95, test_file->get_datum(2, 2));
 
+	// Write the data to disk
+	int file_write_success = test_file->write_file_ascii(path);
+	EXPECT_EQ(1, file_read_success);
+
+	// TODO: Re-read the data into a new object and validate
+	HeatFlow::MatrixFile<int> *read_file = new HeatFlow::MatrixFile<int>();
+	read_file->read_file_ascii(path);
+	EXPECT_EQ(10, read_file->get_data()->size1());
+	EXPECT_EQ(15, read_file->get_data()->size2());
+	EXPECT_EQ(3, read_file->get_datum(1, 1));
+	EXPECT_EQ(95, read_file->get_datum(2, 2));
 }
