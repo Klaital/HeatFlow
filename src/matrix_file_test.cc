@@ -77,3 +77,20 @@ TEST(FileIOTest, ReadAsciiFileInvalidHeader) {
 
 	EXPECT_EQ(-1, file_read_success);
 }
+
+TEST(FileWriteTest, WriteAsciiSuccess) {
+	HeatFlow::MatrixFile<int> *test_file = new HeatFlow::MatrixFile<int>();
+
+	// Initialize the matrix and validate the new structure
+	test_file->initialize(10, 15, 3);
+	EXPECT_EQ(10, test_file->get_data()->size1());
+	EXPECT_EQ(15, test_file->get_data()->size2());
+	EXPECT_EQ(3, test_file->get_datum(1, 1));
+
+	// Alter one of the elements and revalidate
+	test_file->set_datum(2, 2, 95);
+	EXPECT_EQ(10, test_file->get_data()->size1());
+	EXPECT_EQ(15, test_file->get_data()->size2());
+	EXPECT_EQ(95, test_file->get_datum(2, 2));
+
+}

@@ -30,17 +30,17 @@ namespace HeatFlow {
 		inline void set_data(boost::numeric::ublas::matrix<T> &new_data) { delete this->data_; this->data_ = new boost::numeric::ublas::matrix<T>(new_data); }
 
 		// Utility functions for interacting with the underlying data matrix
-		inline void set_datum(size_t i, size_t j, T new_value) { (*this->data_).insert_element(i, j, new_value); }
+		inline void set_datum(size_t i, size_t j, T new_value) { (*this->data_)(i, j) = new_value; }
 		inline T    get_datum(size_t i, size_t j) { return (*this->data_)(i,j); }
+
 		void initialize(size_t i, size_t j) {
 			this->data_->resize(i, j, false);
 		}
 		void initialize(size_t i, size_t j, T default_value) {
 			this->data_->clear();
 			this->data_->resize(i, j, false);
-			for (size_t i; i < this->data_->size1(); i++) {
+			for (size_t i=0; i < this->data_->size1(); i++) {
 				for (size_t j = 0; j < this->data_->size2(); j++) {
-					this->data_->insert_element(i, j, default_value);
 				}
 			}
 		}
