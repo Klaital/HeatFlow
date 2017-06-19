@@ -23,10 +23,17 @@ int HeatFlowProject::load_from_file(const std::string& path) {
 	if (load_success != tinyxml2::XMLError::XML_SUCCESS) {
 		return 0;
 	}
-	this->title_ = doc.FirstChildElement("HeatProject")->FirstChildElement("Title")->GetText();
-	this->notes_ = doc.FirstChildElement("HeatProject")->FirstChildElement("Notes")->GetText();
 
+	tinyxml2::XMLElement *root = doc.FirstChildElement("HeatProject");
 
+	this->title_ = root->FirstChildElement("Title")->GetText();
+	this->notes_ = root->FirstChildElement("Notes")->GetText();
+
+	this->time_step_          = std::strtod(root->FirstChildElement("TimeStep")->GetText(), NULL);
+	this->field_gap_distance_ = std::strtod(root->FirstChildElement("FieldGapDistance")->GetText(), NULL);
+
+	this->initial_temps_matrix_path_ = root->FirstChildElement("InitialTemperaturesField")->FirstChildElement("path")->GetText();
+	this->materials_matrix_path_     = root->FirstChildElement("MaterialsField")->FirstChildElement("path")->GetText();
 	// TODO: load temperatures and materials files
 	return 1;
 }
