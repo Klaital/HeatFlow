@@ -1,0 +1,40 @@
+<HeatProject>
+	<Title>Sample Sim 1</Title>
+	<Notes>Here, we are simulating a simple model for the sake of unit testing the code base</Notes>
+
+	<!-- A list of all materials used in the model -->
+	<Materials>
+		<Material id="1">
+			<name>Air</name>
+			<density>1.225</density> <!-- Kilograms per cubic meter -->
+			<conductivity>0.024</conductivity> <!-- W / (m K) -->
+		</Material>
+		<Material id="2">
+			<name>Aluminum</name>
+			<density>2712</density>
+			<conductivity>205</conductivity>
+		</Material>
+		<Material id="3">
+			<name>Glass</name>
+			<density>2400</density>
+			<conductivity>1.05</conductivity>
+		</Material>
+	</Materials>
+
+	<!-- The configuration of the model -->
+
+	<!-- The starting values for the model's temperature distribution -->
+	<InitialTemperaturesField>
+		<path>./sample3_initial_temps.floatfield</path>
+	</InitialTemperaturesField>
+
+	<!-- The material found at each point in the mesh. The values will be integers, references to the Materials list above -->
+	<MaterialsField>
+		<path>./sample3_materials.intfield</path>
+	</MaterialsField>
+
+	<!-- TODO: the heat sinks / inputs for the model -->
+
+	<TimeStep>1</TimeStep> <!-- The number of milliseconds between simulation steps -->
+	<FieldGapDistance>0.00001</FieldGapDistance> <!-- The distance between nodes in the fields, in meters -->
+</HeatProject>

@@ -4,26 +4,31 @@ namespace HeatFlow {
 
 HeatFlowProject::HeatFlowProject()
 {
-	title = "New Sim Project";
-	notes = "";
-	initial_temps_matrix_path = "Temps.matrix";
-	bom_path = "BOM.xml";
-	materials_matrix_path = "Materials.matrix";
+	this->title_ = "New Sim Project";
+	this->notes_ = "";
+	this->initial_temps_matrix_path_= "Temps.floatfield";
+	this->materials_matrix_path_ = "Materials.intfield";
 
-	this->initial_temps = new boost::numeric::ublas::matrix<temperature_t>();
-	this->materials = new boost::numeric::ublas::matrix<int>();
-	this->bom = new MaterialsCollection();
-
-	// TODO: decide what units these will be defined in. Maybe we can use a string for that, plus a unit-conversion library? 
-	// For now, we'll assume 'meter', I guess.
-	x_distance = 0.0001; // the distance between nodes in the X direction
-	y_distance = 0.0001; // the distance between nodes in the Y direction
-	time_step = 1;  // number of milliseconds between calculation iterations
+	this->field_gap_distance_ = 0.00001; // the distance between nodes in the X direction
+	this->time_step_ = 1;  // number of milliseconds between calculation iterations
 }
 
 HeatFlowProject::~HeatFlowProject()
 {
-	delete this->bom;
+}
+
+int HeatFlowProject::load_from_file(const std::string& path) {
+	tinyxml2::XMLDocument doc;
+	tinyxml2::XMLError load_success = doc.LoadFile(path.c_str());
+	if (load_success != tinyxml2::XMLError::XML_SUCCESS) {
+		return 0;
+	}
+	this->title_ = doc.FirstChildElement("HeatProject")->FirstChildElement("Title")->GetText();
+	this->notes_ = doc.FirstChildElement("HeatProject")->FirstChildElement("Notes")->GetText();
+
+
+	// TODO: load temperatures and materials files
+	return 1;
 }
 
 } // namespace HeatFlow

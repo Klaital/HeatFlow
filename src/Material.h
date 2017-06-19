@@ -22,8 +22,8 @@ public:
 
 private:
     std::string name;
-	thermal_conductivity_t conductivity; // W / (m^2 K / m)
-	density_t density; // grams / cm^3
+	thermal_conductivity_t conductivity; // W / (m K)
+	density_t density; // kilograms / cubic meter
 };
 } // namespace HeatFlow
 

@@ -8,7 +8,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = matrix_file_test utilities_test test_all
+TESTS = matrix_file_test utilities_test test_all heat_flow_project_test tinxyml2_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -50,10 +50,10 @@ gtest_main.a : gtest-all.o gtest_main.o
 utilities.o: utilities.h utilities.cc
 	$(CC) utilities.cc -c $(CPPFLAGS) $(CXXFLAGS)
 
-HeatFlowProject.o: MaterialsCollection.h HeatFlowProject.h HeatFlowProject.cc
+HeatFlowProject.o: HeatFlowProject.h HeatFlowProject.cc tinyxml2.o Material.o MatrixFile.h
 	$(CC) HeatFlowProject.cc -c $(CPPFLAGS) $(CXXFLAGS)
 
-tinyxml.o: tinyxml2.h tinyxml2.cpp
+tinyxml2.o: tinyxml2.h tinyxml2.cpp
 	$(CC) tinyxml2.cpp -c $(CPPFLAGS) $(CXXFLAGS)
 
 MaterialsCollection.o: MaterialsCollection.h MaterialsCollection.cc tinyxml2.o
@@ -75,10 +75,22 @@ matrix_file_test.o: MatrixFile.h matrix_file_test.cc $(GTEST_HEADERS)
 matrix_file_test: matrix_file_test.o utilities.o gtest_main.a
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
 
+heat_flow_project_test.o: Material.o MatrixFile.h tinyxml2.o HeatFlowProject.o heat_flow_project_test.cc $(GTEST_HEADERS)
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c heat_flow_project_test.cc
+
+heat_flow_project_test: Material.o MatrixFile.h tinyxml2.o heat_flow_project_test.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+
+tinyxml2_test.o: tinyxml2.o tinyxml2_test.cc $(GTEST_HEADERS)
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c tinyxml2_test.cc
+
+tinyxml2_test: tinyxml2.o tinyxml2_test.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+
 test_all.o: test_all.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c test_all.cc
 
-test_all: matrix_file_test.o utilities.o test_all.o gtest_main.a
+test_all: tinyxml2_test.o heat_flow_project_test.o matrix_file_test.o utilities_test.o tinyxml2.o utilities.o HeatFlowProject.o Material.o test_all.o gtest_main.a
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
 
 test: test_all
