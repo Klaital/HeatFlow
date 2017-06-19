@@ -96,11 +96,12 @@ TEST(FileWriteTest, WriteAsciiSuccess) {
 
 	// Write the data to disk
 	int file_write_success = test_file->write_file_ascii(path);
-	EXPECT_EQ(1, file_read_success);
+	EXPECT_EQ(1, file_write_success);
 
 	// TODO: Re-read the data into a new object and validate
 	HeatFlow::MatrixFile<int> *read_file = new HeatFlow::MatrixFile<int>();
-	read_file->read_file_ascii(path);
+	int file_read_success = read_file->read_file_ascii(path);
+	EXPECT_EQ(1, file_read_success);
 	EXPECT_EQ(10, read_file->get_data()->size1());
 	EXPECT_EQ(15, read_file->get_data()->size2());
 	EXPECT_EQ(3, read_file->get_datum(1, 1));

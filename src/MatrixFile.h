@@ -86,9 +86,9 @@ namespace HeatFlow {
 				
 				// Parse the line on single whitespace, then check for validity
 				tokens.clear();
-				tokens = string_split(line, " ");
 				boost::trim_right(line);
-
+				tokens = string_split(line, " ");
+				
 				if (tokens.size() != size2) {
 					// Incorrect number of columns in one of the rows
 					return -4;
@@ -99,13 +99,35 @@ namespace HeatFlow {
 					sstream.clear();
 					sstream.str(tokens[j]);
 					sstream >> cast_tmp;
-					this->data_->insert_element(i, j, cast_tmp);
+					(*this->data_)(i, j) = cast_tmp;
 				}
 			} 
 
 			file.close();
 			return 1;
 		}  // read_file_ascii()
+
+		int write_file_ascii(const std::string& path) {
+			std::ofstream file;
+			// Open the given file for writing. Set to truncate mode to blow away any existing data
+			file.open(path, std::ios::out | std::ios::trunc);
+			if (!file.good()) {
+				return 0;
+			}
+
+			// Write the header line with the dimensions of the matrix
+			file << this->data_->size1() << " " << this->data_->size2() << std::endl;
+
+			// Write each row of data to a line
+			for (size_t i = 0; i < this->data_->size1(); i++) {
+				for (size_t j = 0; j < this->data_->size2(); j++) {
+					file << (*this->data_)(i, j) << " ";
+				}
+				file << std::endl;
+			}
+
+			return 1;
+		}
 	}; // class MatrixFile
 
 } // namespace HeatFlow
