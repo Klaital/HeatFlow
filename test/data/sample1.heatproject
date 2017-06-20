@@ -4,17 +4,17 @@
 
 	<!-- A list of all materials used in the model -->
 	<Materials>
-		<Material id="1">
+		<Material id="0">
 			<name>Air</name>
 			<density>1.225</density> <!-- Kilograms per cubic meter -->
 			<conductivity>0.024</conductivity> <!-- W / (m K) -->
 		</Material>
-		<Material id="2">
+		<Material id="1">
 			<name>Aluminum</name>
 			<density>2712</density>
 			<conductivity>205</conductivity>
 		</Material>
-		<Material id="3">
+		<Material id="2">
 			<name>Glass</name>
 			<density>2400</density>
 			<conductivity>1.05</conductivity>

@@ -30,11 +30,26 @@ TEST(ProjectLoadTest, HandwrittenSample) {
 	EXPECT_EQ("./sample3_initial_temps.floatfield", project.get_initial_temps_path());
 	EXPECT_EQ("./sample3_materials.intfield", project.get_materials_path());
 	
-	/*
-	EXPECT_EQ(3, project.get_materials().size());
-	EXPECT_EQ("Air", project.get_material(1).get_name());
-	EXPECT_EQ(1.225, project.get_material(1).get_density());
-	EXPECT_EQ(0.024, project.get_material(1).get_conductivity());
-	*/
+	EXPECT_EQ(3, project.get_bom().size());
+	std::map<int, HeatFlow::Material> bom = project.get_bom();
+	HeatFlow::Material mat1;
+	HeatFlow::Material mat2;
+	HeatFlow::Material mat3;
+	
+	mat1 = bom[0];
+	EXPECT_EQ("Air", mat1.get_name());
+	EXPECT_EQ(1.225, mat1.get_density());
+	EXPECT_EQ(0.024, mat1.get_conductivity());
+
+	mat2 = bom[1];
+	EXPECT_EQ("Aluminum", mat2.get_name());
+	EXPECT_EQ(2712.0, mat2.get_density());
+	EXPECT_EQ(205.0, mat2.get_conductivity());
+
+	mat3 = bom[2];
+	EXPECT_EQ("Glass", mat3.get_name());
+	EXPECT_EQ(2400.0, mat3.get_density());
+	EXPECT_EQ(1.05, mat3.get_conductivity());
+
 	// TODO: write the temps and materials data files, and validate their values here
 }

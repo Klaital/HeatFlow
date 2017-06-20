@@ -26,6 +26,7 @@ int HeatFlowProject::load_from_file(const std::string& path) {
 
 	tinyxml2::XMLElement *root = doc.FirstChildElement("HeatProject");
 
+	// Load the single-value elements
 	this->title_ = root->FirstChildElement("Title")->GetText();
 	this->notes_ = root->FirstChildElement("Notes")->GetText();
 
@@ -34,6 +35,22 @@ int HeatFlowProject::load_from_file(const std::string& path) {
 
 	this->initial_temps_matrix_path_ = root->FirstChildElement("InitialTemperaturesField")->FirstChildElement("path")->GetText();
 	this->materials_matrix_path_     = root->FirstChildElement("MaterialsField")->FirstChildElement("path")->GetText();
+
+	// Load the Bill of Materials
+	tinyxml2::XMLElement *bom = root->FirstChildElement("Materials");
+	tinyxml2::XMLElement *material = bom->FirstChildElement();
+	Material tmp_material;
+	int new_id = 0;
+	while (material != NULL) {
+		tmp_material.set_name(material->FirstChildElement("name")->GetText());
+		tmp_material.set_density(std::strtod(material->FirstChildElement("density")->GetText(), NULL));
+		tmp_material.set_conductivity(std::strtod(material->FirstChildElement("conductivity")->GetText(), NULL));
+		new_id = material->IntAttribute("id");
+		this->bom_[new_id] = tmp_material;
+
+		material = material->NextSiblingElement();
+	}
+
 	// TODO: load temperatures and materials files
 	return 1;
 }

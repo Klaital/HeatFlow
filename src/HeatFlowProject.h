@@ -1,6 +1,7 @@
 #ifndef HEATFLOW_HEATFLOWPROJECT_H_
 #define HEATFLOW_HEATFLOWPROJECT_H_
 #include <string>
+#include <map>
 
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
@@ -24,7 +25,7 @@ private:    // Member variables
 	MatrixFile<temperature_t> initial_temperatures_;
 	MatrixFile<int> materials_;
 
-	std::vector<Material> bom_;
+	std::map<int, Material> bom_;
 
     distance_t      field_gap_distance_; // the distance between nodes in the X direction in meters
     time_delta_t    time_step_;  // number of milliseconds between calculation iterations
@@ -47,6 +48,13 @@ public:     // Accessors
 	inline void        set_initial_temps_path(const std::string& initial_temps_path) { this->initial_temps_matrix_path_ = initial_temps_path; }
 	inline std::string get_materials_path() { return this->materials_matrix_path_; }
 	inline void        set_materials_path(const std::string& materials_path) { this->materials_matrix_path_ = materials_path; }
+
+	inline std::map<int, Material> get_bom() { return this->bom_; }
+	inline void set_bom(const std::map<int, Material>& new_bom) { this->bom_ = new_bom; }
+
+	int add_material(const Material& new_material);
+	int delete_material(const std::string& name);
+	int delete_material(int index);
 
 public:     // Constructors & Destructors
     
