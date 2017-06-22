@@ -35,11 +35,9 @@ namespace HeatFlow {
 
 		// Get the absolute paths to the data files. 
 		// In the project file, they are specified relative to the config file's directory.
-		boost::filesystem::path temps_matrix_path(root->FirstChildElement("InitialTemperaturesField")->FirstChildElement("path")->GetText());
 		boost::filesystem::path config_path(path);
-		boost::filesystem::path real_temps_path = config_path.parent_path() / temps_matrix_path;
-		//this->initial_temps_matrix_path_ = root->FirstChildElement("InitialTemperaturesField")->FirstChildElement("path")->GetText();
-		this->initial_temps_matrix_path_ = real_temps_path.native();
+		boost::filesystem::path initial_temps_path(root->FirstChildElement("InitialTemperaturesField")->FirstChildElement("path")->GetText());
+		this->initial_temps_matrix_path_ = (config_path.parent_path() / initial_temps_path).native();
 		boost::filesystem::path materials_matrix_path(root->FirstChildElement("MaterialsField")->FirstChildElement("path")->GetText());
 		this->materials_matrix_path_ = (config_path.parent_path() / materials_matrix_path).native();
 
