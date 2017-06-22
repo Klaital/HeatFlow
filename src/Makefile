@@ -4,7 +4,7 @@ GTEST_DIR = ../../googletest/googletest
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread 
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -67,31 +67,31 @@ utilities_test.o: utilities.o utilities_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c utilities_test.cc
 
 utilities_test: utilities_test.o utilities.o gtest_main.a
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 matrix_file_test.o: MatrixFile.h matrix_file_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c matrix_file_test.cc
 
 matrix_file_test: matrix_file_test.o utilities.o gtest_main.a
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 heat_flow_project_test.o: Material.o MatrixFile.h tinyxml2.o HeatFlowProject.o heat_flow_project_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c heat_flow_project_test.cc
 
 heat_flow_project_test: Material.o MatrixFile.h tinyxml2.o heat_flow_project_test.o gtest_main.a
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 tinyxml2_test.o: tinyxml2.o tinyxml2_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c tinyxml2_test.cc
 
 tinyxml2_test: tinyxml2.o tinyxml2_test.o gtest_main.a
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 test_all.o: test_all.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c test_all.cc
 
 test_all: tinyxml2_test.o heat_flow_project_test.o matrix_file_test.o utilities_test.o tinyxml2.o utilities.o HeatFlowProject.o Material.o test_all.o gtest_main.a
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lpthread -o $@
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 test: test_all
 	./test_all

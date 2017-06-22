@@ -5,6 +5,7 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/filesystem.hpp>
 
 #include "configs.h"
 #include "tinyxml2.h"
