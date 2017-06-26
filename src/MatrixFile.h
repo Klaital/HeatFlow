@@ -21,6 +21,22 @@ namespace HeatFlow {
 	public:
 		inline MatrixFile() { this->data_ = new boost::numeric::ublas::matrix<T>(2, 2); };
 		inline MatrixFile(size_t size_i, size_t size_j) { this->data_ = new boost::numeric::ublas::matrix<T>(size_i, size_j); }
+		// Copy Constructor
+		MatrixFile(MatrixFile<T>& old_matrix) {
+			// Resize our internal matrix to the size of the one we're copying in
+			size_t size1, size2;
+			size1 = old_matrix.get_size1();
+			size2 = old_matrix.get_size2();
+			this->initialize(size1, size2);
+
+			// Copy in the old matrix's data
+			for (size_t i = 0; i < old_matrix.get_size1(); i++) {
+				for (size_t j = 0; j < old_matrix.get_size2(); j++) {
+					(*this->data_)(i, j) = old_matrix.get_datum(i, j);
+				}
+			}
+		}
+
 		inline ~MatrixFile() {
 			delete this->data_;
 		}
@@ -28,6 +44,8 @@ namespace HeatFlow {
 		// Accessors
 		inline boost::numeric::ublas::matrix<T>* get_data() { return this->data_; }
 		inline void set_data(boost::numeric::ublas::matrix<T> &new_data) { delete this->data_; this->data_ = new boost::numeric::ublas::matrix<T>(new_data); }
+		inline size_t get_size1() { return this->data_->size1(); }
+		inline size_t get_size2() { return this->data_->size2(); }
 
 		// Utility functions for interacting with the underlying data matrix
 		inline void set_datum(size_t i, size_t j, T new_value) { (*this->data_)(i, j) = new_value; }

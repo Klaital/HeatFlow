@@ -50,17 +50,22 @@ public:     // Accessors
 	inline std::string get_materials_path() { return this->materials_matrix_path_; }
 	inline void        set_materials_path(const std::string& materials_path) { this->materials_matrix_path_ = materials_path; }
 
+	inline MatrixFile<temperature_t>& get_initial_temps() { return this->initial_temperatures_; }
+	inline MatrixFile<int>&           get_materials()     { return this->materials_; }
+	
 	inline std::map<int, Material> get_bom() { return this->bom_; }
 	inline void set_bom(const std::map<int, Material>& new_bom) { this->bom_ = new_bom; }
 
+public:		// Data Manipulation
 	int add_material(const Material& new_material);
 	int delete_material(const std::string& name);
 	int delete_material(int index);
+	void copy_materials_matrix(MatrixFile<Material *> &materials_matrix);
 
 public:     // Constructors & Destructors
     
     // Construct an empty project
-    HeatFlowProject();    
+    HeatFlowProject();
     
     // Destroy the project
     ~HeatFlowProject();

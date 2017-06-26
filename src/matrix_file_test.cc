@@ -4,6 +4,15 @@
 
 // Tests MatrixFile
 
+TEST(MatrixCopyTest, CopyConstructor) {
+	HeatFlow::MatrixFile<int> matrix1;
+	matrix1.initialize(2, 2, 15);
+
+	EXPECT_EQ(15, matrix1.get_datum(0, 1));
+
+
+}
+
 TEST(DataSetTest, WholeNewMatrix) {
 	HeatFlow::MatrixFile<int> *test_file = new HeatFlow::MatrixFile<int>(2,2);
 	boost::numeric::ublas::matrix<int> sample_data(3,3);

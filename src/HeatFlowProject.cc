@@ -123,5 +123,18 @@ namespace HeatFlow {
 		return 1;
 	}
 
+	void HeatFlowProject::copy_materials_matrix(MatrixFile<Material *> &materials_matrix) {
+		// initialize the resulting matrix with the correct dimensions
+		materials_matrix.initialize(this->materials_.get_size1(), this->materials_.get_size2());
+		//MatrixFile<Material *> materials_matrix(this->materials_.get_size1(), this->materials_.get_size2());
+
+		// Convert the BOM index at each matrix node into a pointer to the actual Material object in the BOM
+		for (size_t i = 0; i < this->materials_.get_size1(); i++) {
+			for (size_t j = 0; j < this->materials_.get_size2(); j++) {
+				materials_matrix.set_datum(i, j, &this->bom_[this->materials_.get_datum(i, j)]);
+			}
+		}
+
+	}
 } // namespace HeatFlow
 
