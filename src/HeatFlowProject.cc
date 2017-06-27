@@ -123,7 +123,7 @@ namespace HeatFlow {
 		return 1;
 	}
 
-	void HeatFlowProject::copy_materials_matrix(MatrixFile<Material *> &materials_matrix) {
+	void HeatFlowProject::copy_materials_matrix(MatrixFile<Material *> &materials_matrix) const {
 		// initialize the resulting matrix with the correct dimensions
 		materials_matrix.initialize(this->materials_.get_size1(), this->materials_.get_size2());
 		//MatrixFile<Material *> materials_matrix(this->materials_.get_size1(), this->materials_.get_size2());

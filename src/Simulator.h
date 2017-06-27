@@ -14,10 +14,12 @@ namespace HeatFlow {
 		Simulator();
 		Simulator(const HeatFlowProject& project_config);
 		~Simulator();
+		// Operator Overloads
+		Simulator& operator=(const Simulator &s);
 
 		// Accessors
-		inline HeatFlowProject& get_project_config() { return this->project_config_; }
-		inline time_t           get_elapsed_time()   { return this->elapsed_time_; } 
+		inline HeatFlowProject& get_project_config() const { return this->project_config_; }
+		inline time_t           get_elapsed_time()   const { return this->elapsed_time_; } 
 
 	private:
 		time_t elapsed_time_;

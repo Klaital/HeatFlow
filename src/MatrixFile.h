@@ -44,12 +44,12 @@ namespace HeatFlow {
 		// Accessors
 		inline boost::numeric::ublas::matrix<T>* get_data() { return this->data_; }
 		inline void set_data(boost::numeric::ublas::matrix<T> &new_data) { delete this->data_; this->data_ = new boost::numeric::ublas::matrix<T>(new_data); }
-		inline size_t get_size1() { return this->data_->size1(); }
-		inline size_t get_size2() { return this->data_->size2(); }
+		inline size_t get_size1() const { return this->data_->size1(); }
+		inline size_t get_size2() const { return this->data_->size2(); }
 
 		// Utility functions for interacting with the underlying data matrix
 		inline void set_datum(size_t i, size_t j, T new_value) { (*this->data_)(i, j) = new_value; }
-		inline T    get_datum(size_t i, size_t j) { return (*this->data_)(i,j); }
+		inline T    get_datum(size_t i, size_t j) const { return (*this->data_)(i,j); }
 
 		void initialize(size_t i, size_t j) {
 			this->data_->resize(i, j, false);
@@ -95,7 +95,7 @@ namespace HeatFlow {
 			std::string line;
 			std::stringstream sstream;
 			T cast_tmp;
-			for (int i = 0; i < size1; i++) {
+			for (size_t i = 0; i < size1; i++) {
 				if (file.eof()) {
 					// We ran out of file before we should have.
 					return -3;
@@ -113,7 +113,7 @@ namespace HeatFlow {
 				}
 
 				// Parse each of the tokens into a type T variable, and set it in the data matrix
-				for (int j = 0; j < size2; j++) {
+				for (size_t j = 0; j < size2; j++) {
 					sstream.clear();
 					sstream.str(tokens[j]);
 					sstream >> cast_tmp;
