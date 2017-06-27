@@ -3,6 +3,13 @@ HeatFlow
 
 Open-source heat-flow simulator.
 
+Build Requirements
+==================
+There are no executeables yet, other than the unit tests. Running "make" in the src directory will compile the object files.
+
+Running "make test" will build and run all of the Unit Tests.
+
+The Unit Tests require that the Google Test sources are installed in a sibling directory as the root of this project. https://github.com/google/googletest
 
 Required Components
 ===================

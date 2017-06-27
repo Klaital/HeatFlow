@@ -7,9 +7,9 @@ namespace HeatFlow {
 
 Material::Material() 
 {
-    this->name = "";
-	this->conductivity = 0.591; // water
-	this->density = 1.0; // water at 4-5 degrees C
+    this->name_ = "";
+	this->conductivity_ = 0.591; // water
+	this->density_ = 1.0; // water at 4-5 degrees C
 }
 Material::~Material()
 {
@@ -23,20 +23,14 @@ int Material::to_xml(int index, std::string& xml_buffer)
     std::string indexStr = std::to_string(index);
 	std::stringstream ss;
 
-	ss << "<material index=\"" << index << "\"><name>" << this->name << "</name></material>";
+	ss << "<Material id=\"" << index << "\"><name>"
+		<< this->name_ << "</name><density>"
+		<< this->density_ << "</density><conductivity>"
+		<< this->conductivity_ << "</conductivity></Material>";
 
     
 	xml_buffer.assign(ss.str());
     return 1;
-}
-int Material::load_xml(const std::string& xml)
-{
-    // TODO: use TinyXML2 to parse the XML
-    // See to_string for description of columns
-    // for now, the only column is the name
-
-    this->name = "Name from XML";
-    return 0;
 }
 
 } // namespace HeatFlow

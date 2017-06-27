@@ -13,6 +13,10 @@
 *.la
 *.a
 
+# Test binaries
+src/test_all
+src/*_test
+
 # Visual Studio stuff
 *.suo
 *.db
