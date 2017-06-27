@@ -24,4 +24,7 @@ class Material
         @index = config_hash["index"].to_i
     end
     
+    def to_s_pretty
+        return to_h.to_s_pretty
+    end
 end

@@ -57,6 +57,14 @@ class Project
         @materials_matrix = Project.read_data_file(materials_path).dup
     end
 
+    # Fetch a new Material object for the given index value
+    def get_material(index)
+        @bom.each do |material|
+            return material.dup if index == material.index
+        end
+        return nil
+    end
+
     # Static method for loading data from a matrix file
     def self.read_data_file(path)
         LOGGER.info("Loading data from file: #{path}")
