@@ -22,3 +22,5 @@ src/*_test
 *.db
 .vs/*
 
+# Logfiles
+*.log

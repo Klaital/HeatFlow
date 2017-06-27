@@ -1,0 +1,17 @@
+{
+    "initial_temperatures_path": "./sample3_initial_temps.floatfield",
+    "materials_matrix_path":     "./sample3_materials.intfield",
+    "time_step": 1,
+    "field_map_distance": 0.000001,
+    "bom": [
+        {
+            "name": "Air", "density": 1.225, "conductivity": 0.024, "index": 0
+        },
+        {
+            "name": "Aluminum", "density": 2712, "conductivity": 205, "index": 1
+        },
+        {
+            "name": "Glass", "density": 2400, "conductivity": 1.05, "index": 2
+        }
+    ]
+}
