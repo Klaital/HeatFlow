@@ -13,5 +13,8 @@
         {
             "name": "Glass", "density": 2400, "conductivity": 1.05, "specific_heat": 0.84, "index": 2
         }
+    ],
+    "probes": [
+        
     ]
 }

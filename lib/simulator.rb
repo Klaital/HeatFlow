@@ -5,14 +5,12 @@ class Simulator
     attr_reader   :materials # This should be an array of actual Material objects, dereferenced from the Project's BoM indices
     attr_accessor :elapsed_time
     attr_accessor :project_config
-    attr_accessor :probes # Points in the model at which we want to track the temperature over time
 
     attr_reader :surface_area
 
     def initialize(project_config: Project.new)
         @project_config = project_config
         @elapsed_time = 0.0
-        @probes = []
         
         @surface_area = nil
     end

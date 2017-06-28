@@ -10,7 +10,7 @@ class Probe
     end
 
     def add_reading(elapsed_time, value)
-        @value_history.unshift([ elapsed_time, value ])
+        @value_history.push([ elapsed_time, value ])
     end
 
     def to_spreadsheet(set_header: true, delim: ',')
@@ -21,6 +21,22 @@ class Probe
         end
 
         return s
+    end
+
+    # Serialization to a Hash
+    def to_h
+        {
+            "label" => @label.to_s,
+            "coordinate" => { "size1" => @coordinate[0], "size2" => @coordinate[1] },
+            "value_history" => @value_history,
+        }
+    end
+
+    # Deserialize from Hash
+    def from_h(probe_config)
+        @label = probe_config['label']
+        @coordinate = [ probe_config['coordinate']['size1'], probe_config['coordinate']['size1'] ]
+        @value_history = probe_config['value_history']
     end
 end
 

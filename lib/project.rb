@@ -1,12 +1,14 @@
 require 'json'
 require_relative './configs.rb'
+require_relative './probe.rb'
 
 class Project
     attr_accessor :initial_temperatures_path, :initial_temperatures_matrix, # Temperatures across the model at the start of the simulation
                     :materials_matrix_path, :materials_matrix, # Physical materials configuration for the model
                     :bom, # Bill of Materials: the list of all materials in use in this model
                     :time_step, # number of milliseconds to elapse between simulator calculation rounds
-                    :field_map_distance # distance in meters between any two nodes in the matrix
+                    :field_map_distance, # distance in meters between any two nodes in the matrix
+                    :probes # Points in the model at which we want to track the temperature over time
 
     attr_accessor :project_config_path
 
@@ -16,6 +18,7 @@ class Project
         @bom = bom
         @time_step = time_step
         @field_map_distance = field_map_distance
+        @probes = []
     end
 
     # Serialize to Hash
@@ -26,6 +29,7 @@ class Project
             "bom" => @bom.collect {|mat| mat.to_h},
             "time_step" => @time_step,
             "field_map_distance" => @field_map_distance,
+            "probes" => @probes.collect {|p| p.to_h},
         }
     end
 
@@ -35,7 +39,16 @@ class Project
         @materials_matrix_path     = project_hash["materials_matrix_path"]
         @time_step                 = project_hash["time_step"]
         @field_map_distance        = project_hash["field_map_distance"] 
-        @bom = project_hash["bom"].collect {|mat| m = Material.new; m.from_h(mat); m; }
+        @bom = if (project_hash.has_key?("bom") && project_hash['bom'].kind_of?(Array)) 
+            project_hash["bom"].collect {|mat| m = Material.new; m.from_h(mat); m; }
+        else
+            []
+        end
+        @probes = if (project_hash.has_key?('probes') && project_hash['probes'].kind_of?(Array)) 
+            project_hash["probes"].collect {|probe_config| p = Probe.new; p.from_h(probe_config); p;}
+        else
+            []
+        end
     end
 
     # Deserialize from file

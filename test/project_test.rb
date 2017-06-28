@@ -2,6 +2,7 @@ require 'minitest/autorun'
 
 require_relative "../lib/project.rb"
 require_relative "../lib/material.rb"
+require_relative "../lib/probe.rb"
 
 class TestProject < Minitest::Test
     def setup
@@ -14,6 +15,10 @@ class TestProject < Minitest::Test
         ]
         @project1.time_step = 1
         @project1.field_map_distance = 0.000001
+        @project1.probes = [
+            Probe.new(label: 'Probe1', coordinate: [ 0, 0 ]),
+            Probe.new(label: 'Probe2', coordinate: [ 3, 1 ])
+        ]
     end
 
     def test_project_init
@@ -38,6 +43,10 @@ class TestProject < Minitest::Test
                 {
                     "name" => 'Glass',    "density" => 2400, "conductivity" => 1.05, "index" => 2
                 }
+            ],
+            "probes" => [
+                {"label" => 'Probe1', "coordinate" => { "size1" => 0, "size2" => 0 }, "value_history" => [] },
+                {"label" => 'Probe2', "coordinate" => { "size1" => 3, "size2" => 1 }, "value_history" => [] }
             ]
         }, @project1.to_h)
 
@@ -54,12 +63,20 @@ class TestProject < Minitest::Test
                 {
                     "name" => 'Glass',    "density" => 2400, "conductivity" => 1.05, "index" => 2
                 }
+            ],
+            "probes" => [
+                {"label" => 'Probe1', "coordinate" => { "size1" => 0, "size2" => 0 }, "value_history" => [] },
+                {"label" => 'Probe2', "coordinate" => { "size1" => 3, "size2" => 1 }, "value_history" => [] }
             ]
         })
 
         assert_equal("./data/sample1_ascii.floatfield", project2.initial_temperatures_path)
         assert_equal(2, project2.bom.length)
         assert_kind_of(Material, project2.bom[0], "BoM objects were not deserialized")
+        assert_kind_of(Array, project2.probes)
+        assert_equal(2, project2.probes.length)
+        assert_kind_of(Probe, project2.probes[0])
+        
     end
 
     def test_project_file_io
