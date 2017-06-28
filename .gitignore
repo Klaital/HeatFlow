@@ -23,4 +23,4 @@ src/*_test
 .vs/*
 
 # Logfiles
-*.log
+*.log*
