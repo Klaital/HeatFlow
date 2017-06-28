@@ -38,10 +38,10 @@ class TestProject < Minitest::Test
             "field_map_distance" => 0.000001,
             "bom" => [
                 {
-                    "name" => "Aluminum", "density" => 2712, "conductivity" => 205,  "index" => 1
+                    "name" => "Aluminum", "density" => 2712, "conductivity" => 205,  "index" => 1, "specific_heat": 1.0
                 },
                 {
-                    "name" => 'Glass',    "density" => 2400, "conductivity" => 1.05, "index" => 2
+                    "name" => 'Glass',    "density" => 2400, "conductivity" => 1.05, "index" => 2, "specific_heat": 1.0
                 }
             ],
             "probes" => [
@@ -76,7 +76,7 @@ class TestProject < Minitest::Test
         assert_kind_of(Array, project2.probes)
         assert_equal(2, project2.probes.length)
         assert_kind_of(Probe, project2.probes[0])
-        
+
     end
 
     def test_project_file_io

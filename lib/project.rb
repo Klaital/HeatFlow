@@ -1,6 +1,7 @@
 require 'json'
 require_relative './configs.rb'
 require_relative './probe.rb'
+require_relative './material.rb'
 
 class Project
     attr_accessor :initial_temperatures_path, :initial_temperatures_matrix, # Temperatures across the model at the start of the simulation
@@ -59,6 +60,14 @@ class Project
         h = JSON.parse(File.read(path))
         p.from_h(h)
         return p
+    end
+
+    # Serialize to file
+    def save(path='current_project.json')
+        f = File.open(path, 'w')
+        s = JSON.pretty_generate(to_h)
+        f.puts s
+        s
     end
 
     # Load data files for the materials config and initial temperature profile
