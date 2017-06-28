@@ -5,13 +5,15 @@ class Simulator
     attr_reader   :materials # This should be an array of actual Material objects, dereferenced from the Project's BoM indices
     attr_accessor :elapsed_time
     attr_accessor :project_config
-    
+    attr_accessor :probes # Points in the model at which we want to track the temperature over time
+
     attr_reader :surface_area
 
     def initialize(project_config: Project.new)
         @project_config = project_config
         @elapsed_time = 0.0
-
+        @probes = []
+        
         @surface_area = nil
     end
 
@@ -65,6 +67,12 @@ class Simulator
         end
         
         @elapsed_time += @project_config.time_step
+    end
+
+    # The heat flowing into a node via conductive heat transfer in Joules.
+    def self.compute_heat_flow(surface_area, distance, material, temp_home, temp_nearby, time_step)
+        watts = material.conductivity * surface_area * (temp_nearby - temp_home) / distance
+        joules = watts * time_step
     end
 
 end

@@ -58,6 +58,5 @@ class SimulatorProject < Minitest::Test
         assert_equal(2, @simulator.elapsed_time)
         assert_equal(123.6, @simulator.temperatures_next[0][0])
         assert_equal(0.2,   @simulator.temperatures_next[1][1])
-        
     end
 end
