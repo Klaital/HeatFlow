@@ -21,4 +21,11 @@ src/*_test
 *.suo
 *.db
 .vs/*
-
+*.pdb
+*.idb
+*.lastbuildstate
+*.vcxproj.*
+*.tlog
+*.log
+*.pch
+*.obj

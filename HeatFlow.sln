@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThermalSimulator", "ThermalSimulator\ThermalSimulator.vcxproj", "{F321B5D5-049F-4719-9DBC-46C55D540788}"
+	ProjectSection(ProjectDependencies) = postProject
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3} = {07C94314-7627-4E99-95D7-C6F08FA92FE3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libheatflow", "libheatflow\libheatflow.vcxproj", "{07C94314-7627-4E99-95D7-C6F08FA92FE3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestLibHeatFlow", "TestLibHeatFlow\TestLibHeatFlow.vcxproj", "{34BBD73F-C699-4A4C-A130-9493CACAA983}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Debug|x64.ActiveCfg = Debug|x64
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Debug|x64.Build.0 = Debug|x64
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Debug|x86.ActiveCfg = Debug|Win32
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Debug|x86.Build.0 = Debug|Win32
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Release|x64.ActiveCfg = Release|x64
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Release|x64.Build.0 = Release|x64
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Release|x86.ActiveCfg = Release|Win32
+		{F321B5D5-049F-4719-9DBC-46C55D540788}.Release|x86.Build.0 = Release|Win32
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Debug|x64.ActiveCfg = Debug|x64
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Debug|x64.Build.0 = Debug|x64
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Debug|x86.ActiveCfg = Debug|Win32
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Debug|x86.Build.0 = Debug|Win32
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Release|x64.ActiveCfg = Release|x64
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Release|x64.Build.0 = Release|x64
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Release|x86.ActiveCfg = Release|Win32
+		{07C94314-7627-4E99-95D7-C6F08FA92FE3}.Release|x86.Build.0 = Release|Win32
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Debug|x64.ActiveCfg = Debug|x64
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Debug|x64.Build.0 = Debug|x64
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Debug|x86.ActiveCfg = Debug|Win32
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Debug|x86.Build.0 = Debug|Win32
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Release|x64.ActiveCfg = Release|x64
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Release|x64.Build.0 = Release|x64
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Release|x86.ActiveCfg = Release|Win32
+		{34BBD73F-C699-4A4C-A130-9493CACAA983}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
