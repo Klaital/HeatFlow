@@ -16,12 +16,12 @@ public:
 	//boost::multi_array::size_type get_size2() { return this->data_->shape()[1]; }
 //	boost::multi_array<T, 2>::size_type* get_matrix_size() { return this->data_->shape(); }
 	boost::multi_array<T, 2>* get_data() { return this->data_; }
-
+	
 	void set_data(const boost::multi_array<T,2>& new_data) {
 		// Resize the data array
 		delete this->data_;
-		this->data_ = new boost::multi_array<T, 2>();
-
+		this->data_ = new boost::multi_array<T, 2>(new_data.shape());
+		
 		// Copy in the new data
 		for (boost::multi_array<T,2>::size_type i = 0; i < this->data_->shape()[0]; i++) {
 			for (boost::multi_array<T, 2>::size_type j = 0; j < this->data_->shape()[1]; j++) {

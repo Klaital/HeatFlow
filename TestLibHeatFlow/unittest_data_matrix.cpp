@@ -26,9 +26,16 @@ namespace TestLibHeatFlow
 			
 			matrix->set_data(new_data);
 			Assert::IsNotNull(matrix->get_data());
+			Assert::AreEqual((size_t)4, matrix->get_data()->shape()[0]);
+			Assert::AreEqual((size_t)4, matrix->get_data()->shape()[1]);
 
 			boost::array< boost::multi_array<int, 2>::index, 2 > idx = { {0,0} };
 			
+			boost::multi_array<int, 2> *data = matrix->get_data();
+			Assert::IsNotNull(data);
+			Assert::AreEqual((size_t)4, data->shape()[0]);
+			Assert::AreEqual((size_t)4, data->shape()[1]);
+			Assert::AreEqual(0, (*data)[0][0] );
 			/*
 			Assert::AreEqual(0, (*matrix->get_data())(idx));
 			idx = { {3,1} };
