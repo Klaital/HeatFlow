@@ -3,10 +3,12 @@
 *.lo
 *.o
 *.out
+*.lib
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
+*.dll
 
 # Compiled Static libraries
 *.lai
@@ -29,3 +31,4 @@ src/*_test
 *.log
 *.pch
 *.obj
+
