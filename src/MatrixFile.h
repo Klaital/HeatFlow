@@ -27,18 +27,16 @@ namespace HeatFlow {
 		}
 
 		// Copy Constructor
-		MatrixFile(MatrixFile<T>& old_matrix)
+		MatrixFile(const MatrixFile<T>& old_matrix)
 		{
 			// Resize our internal matrix to the size of the one we're copying in
-			this->initialize(old_matrix.shape());
+			this->initialize(old_matrix.get_size1(), old_matrix.get_size2());
 
 			// Copy in the old matrix's data
-			for (boost::multi_array_types::size_type i = 0; i < old_matrix.shape()[0]; i++) {
-				for (boost::multi_array_types::size_type j = 0; j < old_matrix.shape()[1]; j++)
+			for (boost::multi_array_types::size_type i = 0; i < old_matrix.get_size1(); i++) {
+				for (boost::multi_array_types::size_type j = 0; j < old_matrix.get_size2(); j++)
 				{
-					// Create an index object pointing at the current node, then use it to access the two multi_arrays
-					boost::array< boost::multi_array_types::index, 2 > index = {{ i, j }};
-					(*this->data_)(index) = old_matrix(index);
+					this->set_datum(i,j, old_matrix.get_datum(i,j));
 				}
 			}
 		}
@@ -54,7 +52,7 @@ namespace HeatFlow {
 		inline boost::multi_array_types::size_type get_size2() const { return this->data_->shape()[1]; }
 
 		// Utility functions for interacting with the underlying data matrix
-		inline void set_datum(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j, T new_value) 
+		inline void set_datum(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j, const T& new_value) 
 		{
 			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
 			(*this->data_)(index) = new_value;

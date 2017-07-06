@@ -81,7 +81,7 @@ matrix_file_test.o: MatrixFile.h matrix_file_test.cc $(GTEST_HEADERS)
 matrix_file_test: matrix_file_test.o utilities.o gtest_main.a
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
-material_test.o: Material.o $(GTEST_HEADERS)
+material_test.o: Material.o material_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c material_test.cc
 
 material_test: material_test.o Material.o gtest_main.a

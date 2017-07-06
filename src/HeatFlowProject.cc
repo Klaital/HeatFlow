@@ -29,7 +29,6 @@ namespace HeatFlow {
 		// Load the single-value elements
 		this->title_ = root->FirstChildElement("Title")->GetText();
 		this->notes_ = root->FirstChildElement("Notes")->GetText();
-
 		this->time_step_ = std::strtod(root->FirstChildElement("TimeStep")->GetText(), NULL);
 		this->field_gap_distance_ = std::strtod(root->FirstChildElement("FieldGapDistance")->GetText(), NULL);
 
@@ -45,11 +44,28 @@ namespace HeatFlow {
 		tinyxml2::XMLElement *bom = root->FirstChildElement("Materials");
 		tinyxml2::XMLElement *material = bom->FirstChildElement();
 		Material tmp_material;
-		int new_id = 0;
+		unsigned int new_id = 0;
+		unsigned int max_id = 0;
+
+		// Loop once to find the max index, so that we can pre-allocate the array
+		while (material != NULL)
+		{
+			new_id = material->IntAttribute("id");
+			if (new_id >= max_id)
+				max_id = new_id;
+			
+			material = material->NextSiblingElement();
+		}
+		this->bom_.resize(max_id+1);
+
+		// Loop a second time to place each Material in it's correct index
+		material = bom->FirstChildElement(); // start over
 		while (material != NULL) {
+			// Extract the materials data
 			tmp_material.set_name(material->FirstChildElement("name")->GetText());
 			tmp_material.set_density(std::strtod(material->FirstChildElement("density")->GetText(), NULL));
 			tmp_material.set_conductivity(std::strtod(material->FirstChildElement("conductivity")->GetText(), NULL));
+			// Set the material in the correct index in the BoM
 			new_id = material->IntAttribute("id");
 			this->bom_[new_id] = tmp_material;
 
@@ -73,39 +89,43 @@ namespace HeatFlow {
 		}
 		
 		// Check whether the temperature and materials matrices are the same size.
-		if (this->initial_temperatures_.get_data()->size1() != this->materials_.get_data()->size1() 
-			|| this->initial_temperatures_.get_data()->size2() != this->materials_.get_data()->size2()) 
+		if (this->initial_temperatures_.get_size1() != this->materials_.get_size1() 
+			|| this->initial_temperatures_.get_size2() != this->materials_.get_size2()) 
 		{
 			return -5;
 		}
-		
+
 		// If we got here, life must be good
 		return 1;
 	}
 
-	int HeatFlowProject::add_material(const Material& new_material) {
+	unsigned int HeatFlowProject::add_material(const Material& new_material) {
 		// Find the largest currently-used index
-		int max_index = 0;
-		for (std::map<int, Material>::iterator it = this->bom_.begin(); it != this->bom_.end(); ++it) {
-			if (it->first > max_index) {
-				max_index = it->first;
+		unsigned int found_index = 0;
+		for (std::vector<Material>::iterator it = this->bom_.begin(); it != this->bom_.end(); ++it)
+		{
+			if ("Unused BoM Material" == it->get_name())
+			{
+				(*it) = new_material;
+				return found_index;
 			}
+			found_index++;
 		}
 
-		// Increment that index to create a new, unused one
-		int new_index = max_index + 1;
+		// If we reach here, then there were no holes in the BoM, 
+		// so push the new material onto the end of the list.
+		this->bom_.push_back(new_material);
 
-		// Assign the new material to the BoM at the computed index
-		this->bom_[new_index] = new_material;
-
-		// Then return it
-		return new_index;
+		// Then return the new entry's index
+		return this->bom_.size() - 1;
 	}
+
 	int HeatFlowProject::delete_material(const std::string& name) {
 		// Find the index in the BoM of a Material named 'name'
-		for (std::map<int, Material>::iterator it = this->bom_.begin(); it != this->bom_.end(); ++it) {
-			if (name == it->second.get_name()) {
-				this->bom_.erase(it);
+		for (std::vector<Material>::iterator it = this->bom_.begin(); it != this->bom_.end(); ++it) {
+			if (name == it->get_name()) {
+				it->set_name("Unused BoM Material");  // TODO: implement real BoM deletion. Until then, this name indicates a "deleted" item.
+				//this->bom_.erase(it);
 				return 1;
 			}
 		}
@@ -113,25 +133,36 @@ namespace HeatFlow {
 		// If we get here, no materials matched the given name
 		return 0;
 	}
-	int HeatFlowProject::delete_material(int index) {
-		std::map<int, Material>::iterator it = this->bom_.find(index);
-		if (it == this->bom_.end()) {
+	int HeatFlowProject::delete_material(unsigned int index) {
+		if (index >= this->bom_.size())
+		{
 			return 0;
 		}
 		
-		this->bom_.erase(index);
+		this->bom_[index].set_name("Unused BoM Material"); // TODO: implement real BoM deletion. Until then, this name indicates a "deleted" item.
+		//this->bom_.erase(this->bom_.begin() + index);
 		return 1;
 	}
 
-	void HeatFlowProject::copy_materials_matrix(MatrixFile<Material *> &materials_matrix) const {
+	void HeatFlowProject::copy_materials_matrix(MatrixFile<const Material *> &materials_matrix) const
+	{
+		/*
+		// Copy the internal BoM to the return BoM
+		for(unsigned int i=0; i < this->bom_.size(); i++)
+		{
+			bill_of_materials[i] = this->bom_[i];
+		}
+		*/
 		// initialize the resulting matrix with the correct dimensions
 		materials_matrix.initialize(this->materials_.get_size1(), this->materials_.get_size2());
-		//MatrixFile<Material *> materials_matrix(this->materials_.get_size1(), this->materials_.get_size2());
 
 		// Convert the BOM index at each matrix node into a pointer to the actual Material object in the BOM
-		for (size_t i = 0; i < this->materials_.get_size1(); i++) {
-			for (size_t j = 0; j < this->materials_.get_size2(); j++) {
-				materials_matrix.set_datum(i, j, &this->bom_[this->materials_.get_datum(i, j)]);
+		for (boost::multi_array_types::size_type i = 0; i < this->materials_.get_size1(); i++)
+		{
+			for (boost::multi_array_types::size_type j = 0; j < this->materials_.get_size2(); j++)
+			{
+				unsigned int index = this->materials_.get_datum(i,j);
+				materials_matrix.set_datum(i, j, &(this->bom_[index]));
 			}
 		}
 
