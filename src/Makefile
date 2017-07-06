@@ -11,7 +11,7 @@ LIBRARIES = utilities.o HeatFlowProject.o MaterialsCollection.o Material.o Simul
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = matrix_file_test utilities_test test_all heat_flow_project_test tinyxml2_test simulator_test
+TESTS = matrix_file_test utilities_test test_all heat_flow_project_test tinyxml2_test simulator_test material_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -79,6 +79,12 @@ matrix_file_test.o: MatrixFile.h matrix_file_test.cc $(GTEST_HEADERS)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c matrix_file_test.cc
 
 matrix_file_test: matrix_file_test.o utilities.o gtest_main.a
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
+
+material_test.o: Material.o $(GTEST_HEADERS)
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c material_test.cc
+
+material_test: material_test.o Material.o gtest_main.a
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@
 
 heat_flow_project_test.o: Material.o utilities.o MatrixFile.h tinyxml2.o HeatFlowProject.o heat_flow_project_test.cc $(GTEST_HEADERS)
