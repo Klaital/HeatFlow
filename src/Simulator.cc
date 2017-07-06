@@ -15,10 +15,15 @@ namespace HeatFlow {
 		delete this->previous_temps_;
 		delete this->next_temps_;
 	}
-	Simulator& Simulator::operator=(const Simulator& s) {
+	Simulator& Simulator::operator=(const Simulator& s)
+    {
+        if(this == &s)
+          return *this;
+    
 		this->project_config_ = s.get_project_config();
 		this->previous_temps_ = new MatrixFile<temperature_t>(this->project_config_.get_initial_temps());
 		this->project_config_.copy_materials_matrix(this->materials_);
 		this->elapsed_time_ = 0;
+		return *this;
 	}
 }

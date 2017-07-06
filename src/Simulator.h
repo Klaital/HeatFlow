@@ -18,13 +18,13 @@ namespace HeatFlow {
 		Simulator& operator=(const Simulator &s);
 
 		// Accessors
-		inline HeatFlowProject& get_project_config() const { return this->project_config_; }
+		inline HeatFlowProject  get_project_config() const { return this->project_config_; }
 		inline time_t           get_elapsed_time()   const { return this->elapsed_time_; } 
 
 	private:
 		time_t elapsed_time_;
 		HeatFlowProject project_config_;
-		MatrixFile<Material *>    materials_;
+		MatrixFile<const Material *>    materials_;
 		MatrixFile<temperature_t> *previous_temps_;
 		MatrixFile<temperature_t> *next_temps_;
 	};
