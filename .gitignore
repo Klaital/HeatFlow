@@ -24,3 +24,6 @@ src/*_test
 
 
 .vscode/settings.json
+*.exe
+*.stackdump
+src/*.intfield
