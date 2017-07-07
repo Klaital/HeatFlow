@@ -1,8 +1,9 @@
 CC=g++
-CPPFLAGS=-std=c++11
+#CPPFLAGS=-std=c++11
+CPPFLAGS=-std=gnu++0x
 GTEST_DIR = ../../googletest/googletest
 
-CPPFLAGS += -isystem $(GTEST_DIR)/include
+CPPFLAGS += -isystem  $(GTEST_DIR)/include
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread 
 
