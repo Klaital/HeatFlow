@@ -12,6 +12,15 @@ namespace HeatFlow {
 		this->field_gap_distance_ = 0.00001; // the distance between nodes in the X direction
 		this->time_step_ = 1;  // number of milliseconds between calculation iterations
 	}
+	HeatFlowProject::HeatFlowProject(const HeatFlowProject& other_project) 
+	{
+		this->title_ = other_project.get_title();
+		this->notes_ = other_project.get_notes();
+		this->initial_temps_matrix_path_ = other_project.get_initial_temps_path();
+		this->materials_matrix_path_ = other_project.get_materials_path();
+		this->field_gap_distance_ = other_project.get_field_gap_distance();
+		this->time_step_ = other_project.get_time_step();
+	}
 
 	HeatFlowProject::~HeatFlowProject()
 	{

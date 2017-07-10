@@ -70,6 +70,8 @@ public:     // Constructors & Destructors
 
     // Construct an empty project
     HeatFlowProject();
+    // Copy constructor
+    HeatFlowProject(const HeatFlowProject& other_project);
     
     // Destroy the project
     ~HeatFlowProject();
