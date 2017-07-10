@@ -26,11 +26,14 @@ namespace HeatFlow {
 		// initialize the internal temperature arrays with the size and 
 		// initial values from the config.
 		void initialize_arrays();
+		void simulate();
 
 		// Accessors
 		inline HeatFlowProject  get_project_config() const { return this->project_config_; }
 		inline void             set_project_config(const HeatFlowProject& new_config) { this->project_config_ = new_config; }
 		inline time_delta_t     get_elapsed_time()   const { return this->elapsed_time_; } 
+		inline boost::multi_array<temperature_t, 2>* get_previous_temps() { return &(this->previous_temps_);}
+		inline boost::multi_array<temperature_t, 2>* get_next_temps() { return &(this->next_temps_);}
 
 	private:
 		// Total time spent in simulation, in seconds. Generally, equal to the 

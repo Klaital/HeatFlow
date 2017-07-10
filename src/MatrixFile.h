@@ -3,6 +3,7 @@
 
 #include <boost/multi_array.hpp>
 #include <boost/algorithm/string.hpp>
+#include <memory>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -16,19 +17,22 @@ namespace HeatFlow {
 	class MatrixFile
 	{
 	private:
-		boost::multi_array<T, 2> *data_;
+		std::shared_ptr< boost::multi_array<T,2> > data_;
 
 	public:
-		inline MatrixFile() { this->data_ = new boost::multi_array<T,2>(); };
+		inline MatrixFile() { this->data_ = std::make_shared<boost::multi_array<T,2>>(); }
 		inline MatrixFile(boost::multi_array_types::size_type size_i, boost::multi_array_types::size_type size_j)
 		{
 			boost::array< boost::multi_array_types::size_type, 2 > extents = {{ size_i, size_j }};
-			this->data_ = new boost::multi_array<T,2>(extents);
+			this->data_ = std::make_shared<boost::multi_array<T,2>>(extents);
 		}
 
 		// Copy Constructor
 		MatrixFile(const MatrixFile<T>& old_matrix)
 		{
+			boost::array< boost::multi_array_types::size_type, 2 > extents = {{ old_matrix.get_size1(), old_matrix.get_size2() }};
+			this->data_ = std::make_shared<boost::multi_array<T,2>>(extents);
+
 			// Resize our internal matrix to the size of the one we're copying in
 			this->initialize(old_matrix.get_size1(), old_matrix.get_size2());
 
@@ -41,13 +45,23 @@ namespace HeatFlow {
 			}
 		}
 
-		inline ~MatrixFile() {
-			delete this->data_;
-		}
+		inline ~MatrixFile() { }
 
 		// Accessors
-		inline boost::multi_array<T,2>* get_data() { return this->data_; }
-		inline void set_data(boost::multi_array<T,2> &new_data) { delete this->data_; this->data_ = new boost::multi_array<T,2>(new_data); }
+		inline boost::multi_array<T,2>* get_data() { return this->data_.get(); }
+		inline void set_data(boost::multi_array<T,2> &new_data)
+		{
+			// TODO: copy in the data from the given array rather then calling delete on the shared_ptr
+			this->initialize(new_data.shape()[0], new_data.shape()[1]);
+			for (boost::multi_array_types::size_type i=0; i < this->data_->shape()[0]; i++)
+			{
+				for (boost::multi_array_types::size_type j = 0; j < this->data_->shape()[1]; j++)
+				{
+					boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+					(*this->data_)(index) = new_data(index);
+				}
+			}
+		}
 		inline boost::multi_array_types::size_type get_size1() const { return this->data_->shape()[0]; }
 		inline boost::multi_array_types::size_type get_size2() const { return this->data_->shape()[1]; }
 
@@ -65,13 +79,13 @@ namespace HeatFlow {
 
 		void initialize(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j)
 		{
-			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
-			this->data_->resize(index);
+			boost::array< boost::multi_array_types::size_type, 2 > extents = {{ i, j }};
+			this->data_->resize(extents);
 		}
-		void initialize(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j, T default_value)
+		void initialize(boost::multi_array_types::size_type size_i, boost::multi_array_types::size_type size_j, T default_value)
 		{
-			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
-			this->data_->resize(index);
+			boost::array< boost::multi_array_types::size_type, 2 > extents = {{ size_i, size_j }};
+			this->data_->resize(extents);
 			for (boost::multi_array_types::size_type i=0; i < this->data_->shape()[0]; i++)
 			{
 				for (boost::multi_array_types::size_type j = 0; j < this->data_->shape()[1]; j++)
