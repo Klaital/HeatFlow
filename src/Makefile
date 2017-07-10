@@ -114,3 +114,9 @@ test_all: simulator_test.o tinyxml2_test.o heat_flow_project_test.o matrix_file_
 
 test: test_all
 	./test_all
+
+logger_test.o: logger.h logger_test.cc
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c logger_test.cc
+
+logger_test: logger.h logger_test.o
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) $^ -lboost_system -lboost_filesystem -lpthread -o $@

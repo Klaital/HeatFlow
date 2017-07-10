@@ -9,4 +9,6 @@
 namespace HeatFlow {
   typedef double time_delta_t;
 }
+
+
 #endif // HEATFLOW_CONFIGS_H_
