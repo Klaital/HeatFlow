@@ -1,7 +1,7 @@
 #ifndef HEATFLOW_MATRIXFILE_H_
 #define HEATFLOW_MATRIXFILE_H_
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/multi_array.hpp>
 #include <boost/algorithm/string.hpp>
 #include <string>
 #include <iostream>
@@ -16,23 +16,27 @@ namespace HeatFlow {
 	class MatrixFile
 	{
 	private:
-		boost::numeric::ublas::matrix<T> *data_;
+		boost::multi_array<T, 2> *data_;
 
 	public:
-		inline MatrixFile() { this->data_ = new boost::numeric::ublas::matrix<T>(2, 2); };
-		inline MatrixFile(size_t size_i, size_t size_j) { this->data_ = new boost::numeric::ublas::matrix<T>(size_i, size_j); }
+		inline MatrixFile() { this->data_ = new boost::multi_array<T,2>(); };
+		inline MatrixFile(boost::multi_array_types::size_type size_i, boost::multi_array_types::size_type size_j)
+		{
+			boost::array< boost::multi_array_types::size_type, 2 > extents = {{ size_i, size_j }};
+			this->data_ = new boost::multi_array<T,2>(extents);
+		}
+
 		// Copy Constructor
-		MatrixFile(MatrixFile<T>& old_matrix) {
+		MatrixFile(const MatrixFile<T>& old_matrix)
+		{
 			// Resize our internal matrix to the size of the one we're copying in
-			size_t size1, size2;
-			size1 = old_matrix.get_size1();
-			size2 = old_matrix.get_size2();
-			this->initialize(size1, size2);
+			this->initialize(old_matrix.get_size1(), old_matrix.get_size2());
 
 			// Copy in the old matrix's data
-			for (size_t i = 0; i < old_matrix.get_size1(); i++) {
-				for (size_t j = 0; j < old_matrix.get_size2(); j++) {
-					(*this->data_)(i, j) = old_matrix.get_datum(i, j);
+			for (boost::multi_array_types::size_type i = 0; i < old_matrix.get_size1(); i++) {
+				for (boost::multi_array_types::size_type j = 0; j < old_matrix.get_size2(); j++)
+				{
+					this->set_datum(i,j, old_matrix.get_datum(i,j));
 				}
 			}
 		}
@@ -42,24 +46,38 @@ namespace HeatFlow {
 		}
 
 		// Accessors
-		inline boost::numeric::ublas::matrix<T>* get_data() { return this->data_; }
-		inline void set_data(boost::numeric::ublas::matrix<T> &new_data) { delete this->data_; this->data_ = new boost::numeric::ublas::matrix<T>(new_data); }
-		inline size_t get_size1() const { return this->data_->size1(); }
-		inline size_t get_size2() const { return this->data_->size2(); }
+		inline boost::multi_array<T,2>* get_data() { return this->data_; }
+		inline void set_data(boost::multi_array<T,2> &new_data) { delete this->data_; this->data_ = new boost::multi_array<T,2>(new_data); }
+		inline boost::multi_array_types::size_type get_size1() const { return this->data_->shape()[0]; }
+		inline boost::multi_array_types::size_type get_size2() const { return this->data_->shape()[1]; }
 
 		// Utility functions for interacting with the underlying data matrix
-		inline void set_datum(size_t i, size_t j, T new_value) { (*this->data_)(i, j) = new_value; }
-		inline T    get_datum(size_t i, size_t j) const { return (*this->data_)(i,j); }
-
-		void initialize(size_t i, size_t j) {
-			this->data_->resize(i, j, false);
+		inline void set_datum(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j, const T& new_value) 
+		{
+			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+			(*this->data_)(index) = new_value;
 		}
-		void initialize(size_t i, size_t j, T default_value) {
-			this->data_->clear();
-			this->data_->resize(i, j, false);
-			for (size_t i=0; i < this->data_->size1(); i++) {
-				for (size_t j = 0; j < this->data_->size2(); j++) {
-					(*this->data_)(i, j) = default_value;
+		inline T    get_datum(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j) const 
+		{
+			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+			return (*this->data_)(index);
+		}
+
+		void initialize(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j)
+		{
+			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+			this->data_->resize(index);
+		}
+		void initialize(boost::multi_array_types::size_type i, boost::multi_array_types::size_type j, T default_value)
+		{
+			boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+			this->data_->resize(index);
+			for (boost::multi_array_types::size_type i=0; i < this->data_->shape()[0]; i++)
+			{
+				for (boost::multi_array_types::size_type j = 0; j < this->data_->shape()[1]; j++)
+				{
+					boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+					(*this->data_)(index) = default_value;
 				}
 			}
 		}
@@ -84,18 +102,18 @@ namespace HeatFlow {
 			}
 
 			// Reinitialize the matrix
-			size_t size1 = std::stoi(tokens[0]);
-			size_t size2 = std::stoi(tokens[1]);
+			boost::multi_array_types::size_type size1 = std::stoul(tokens[0]);
+			boost::multi_array_types::size_type size2 = std::stoul(tokens[1]);
 			if (size1 <= 0 || size2 <= 0) {
 				return -2;
 			}
-			this->data_->resize(size1, size2, false);
+			this->initialize(size1, size2);
 
 			// Read in the data rows
 			std::string line;
 			std::stringstream sstream;
 			T cast_tmp;
-			for (size_t i = 0; i < size1; i++) {
+			for (boost::multi_array_types::size_type i = 0; i < size1; i++) {
 				if (file.eof()) {
 					// We ran out of file before we should have.
 					return -3;
@@ -113,11 +131,11 @@ namespace HeatFlow {
 				}
 
 				// Parse each of the tokens into a type T variable, and set it in the data matrix
-				for (size_t j = 0; j < size2; j++) {
+				for (boost::multi_array_types::size_type j = 0; j < size2; j++) {
 					sstream.clear();
 					sstream.str(tokens[j]);
 					sstream >> cast_tmp;
-					(*this->data_)(i, j) = cast_tmp;
+					this->set_datum(i,j,cast_tmp);
 				}
 			} 
 
@@ -134,12 +152,12 @@ namespace HeatFlow {
 			}
 
 			// Write the header line with the dimensions of the matrix
-			file << this->data_->size1() << " " << this->data_->size2() << std::endl;
+			file << this->data_->shape()[0] << " " << this->data_->shape()[1] << std::endl;
 
 			// Write each row of data to a line
-			for (size_t i = 0; i < this->data_->size1(); i++) {
-				for (size_t j = 0; j < this->data_->size2(); j++) {
-					file << (*this->data_)(i, j) << " ";
+			for (boost::multi_array_types::size_type i = 0; i < this->data_->shape()[0]; i++) {
+				for (boost::multi_array_types::size_type j = 0; j < this->data_->shape()[1]; j++) {
+					file << this->get_datum(i, j) << " ";
 				}
 				file << std::endl;
 			}

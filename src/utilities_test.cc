@@ -49,7 +49,7 @@ TEST(FileReadTest, Negative) {
 }
 
 TEST(FileReadTest, IntegerReadPositive) {
-	std::string path("/mnt/c/Users/kenka/Documents/GitHub/HeatFlow/test/data/sample1_ascii.intfield");
+	std::string path("../test/data/sample1_ascii.intfield");
 	std::ifstream file;
 	
 	file.open(path, std::ifstream::in);

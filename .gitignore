@@ -22,3 +22,8 @@ src/*_test
 *.db
 .vs/*
 
+
+.vscode/settings.json
+*.exe
+*.stackdump
+src/*.intfield
