@@ -48,7 +48,7 @@ namespace HeatFlow {
 		inline ~MatrixFile() { }
 
 		// Accessors
-		inline boost::multi_array<T,2>* get_data() { return this->data_.get(); }
+		inline std::shared_ptr<boost::multi_array<T,2>> get_data() { return this->data_; }
 		inline void set_data(boost::multi_array<T,2> &new_data)
 		{
 			// TODO: copy in the data from the given array rather then calling delete on the shared_ptr

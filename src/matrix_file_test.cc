@@ -1,5 +1,6 @@
 #include "MatrixFile.h"
 #include "gtest/gtest.h"
+#include <memory>
 #include <boost/multi_array.hpp>
 
 // Tests MatrixFile
@@ -17,8 +18,10 @@ TEST(DataSetTest, WholeNewMatrix) {
 	boost::array< boost::multi_array_types::index, 2 > extents = {{ 3, 4 }};
 	boost::multi_array<int,2> sample_data(extents);
 	test_file->set_data(sample_data);
-	EXPECT_EQ(sample_data.shape()[0], test_file->get_data()->shape()[0]);
-	EXPECT_EQ(sample_data.shape()[1], test_file->get_data()->shape()[1]);
+	std::shared_ptr<boost::multi_array<int,2>> test_data = test_file->get_data();
+
+	EXPECT_EQ(sample_data.shape()[0], test_data->shape()[0]);
+	EXPECT_EQ(sample_data.shape()[1], test_data->shape()[1]);
 	EXPECT_EQ(sample_data.shape()[0], test_file->get_size1());
 	EXPECT_EQ(sample_data.shape()[1], test_file->get_size2());
 }
