@@ -29,7 +29,7 @@ namespace HeatFlow {
 		this->project_config_.copy_materials_matrix(this->materials_);
 
 		// Use the dimensions of the materials matrix to resize the temperature matrices
-		boost::array< boost::multi_array_types::size_type, 2 > extents = {{ this->materials_.get_size1(), this->materials_.get_size1() }};
+		boost::array< boost::multi_array_types::size_type, 2 > extents = {{ this->materials_.get_size1(), this->materials_.get_size2() }};
 		this->next_temps_.resize(extents);
 		this->previous_temps_.resize(extents);
 
@@ -47,4 +47,26 @@ namespace HeatFlow {
 		}
 	}
 	
+	void Simulator::simulate()
+	{
+		// Copy the last iteration's results to the "old state" array
+		for (boost::multi_array_types::size_type i=0; i < this->materials_.get_size1(); i++)
+		{
+			for (boost::multi_array_types::size_type j=0; j < this->materials_.get_size2(); j++)
+			{
+				boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+				this->previous_temps_(index) = this->next_temps_(index);
+			}
+		}
+
+		// TODO: implement real calculations for the simulation step
+		for (boost::multi_array_types::size_type i=0; i < this->materials_.get_size1(); i++)
+		{
+			for (boost::multi_array_types::size_type j=0; j < this->materials_.get_size2(); j++)
+			{
+				boost::array< boost::multi_array_types::size_type, 2 > index = {{ i, j }};
+				this->next_temps_(index) = this->previous_temps_(index) + 0.1; // TODO: implement real calculations
+			}
+		}
+	}
 }
