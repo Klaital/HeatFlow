@@ -29,7 +29,7 @@ namespace HeatFlow {
 		this->project_config_.copy_materials_matrix(this->materials_);
 
 		// Use the dimensions of the materials matrix to resize the temperature matrices
-		boost::array< boost::multi_array_types::size_type, 2 > extents = {{ this->materials_.get_size1(), this->materials_.get_size1() }};
+		boost::array< boost::multi_array_types::size_type, 2 > extents = {{ this->materials_.get_size1(), this->materials_.get_size2() }};
 		this->next_temps_.resize(extents);
 		this->previous_temps_.resize(extents);
 
